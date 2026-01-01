@@ -62,7 +62,7 @@ pip install -r requirements.txt
 
 ## Dataset Structure
 
-Download the dataset from the following [link](https://www.kaggle.com/datasets/masoudnickparvar/brain-tumor-mri-dataset).
+Download the following [Kaggle dataset](https://www.kaggle.com/datasets/masoudnickparvar/brain-tumor-mri-dataset).
 
 Organize the files as follows:
 
