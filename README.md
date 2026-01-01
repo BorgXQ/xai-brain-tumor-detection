@@ -2,6 +2,8 @@
 
 A deep learning system for classifying human brain MRI images into four categories: glioma, meningioma, pituitary tumor, or no tumor. Uses a deep ensemble of EfficientNet-B0 models with Monte Carlo dropout for uncertainty estimation and an autoencoder-based out-of-distribution (OOD) detector.
 
+Check out the [demo](https://huggingface.co/spaces/Borgupine/xai-brain-tumor).
+
 ## Features
 
 - **Deep Ensemble**: 5 EfficientNet-B0 models for robust predictions
