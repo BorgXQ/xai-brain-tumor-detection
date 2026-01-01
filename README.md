@@ -56,6 +56,8 @@ A deep learning system for classifying human brain MRI images into four categori
 
 ## Installation
 
+This project was developed and tested with **Python 3.9.0**.
+
 ```bash
 pip install -r requirements.txt
 ```
