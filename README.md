@@ -18,28 +18,36 @@ brain_tumor_classifier/
 ├── main.py                       # Main entry point
 ├── requirements.txt              # Python dependencies
 ├── README.md                     # This file
+│
 ├── src/
 │   ├── models/
 │   │   ├── ensemble.py           # EfficientNet ensemble
 │   │   └── autoencoder.py        # OOD detector
+│   │
 │   ├── data/
 │   │   └── dataloader.py         # Data loading utilities
+│   │
 │   ├── training/
 │   │   ├── train_ensemble.py     # Ensemble training
 │   │   └── train_autoencoder.py  # Autoencoder training
+│   │
 │   ├── evaluation/
 │   │   └── evaluate.py           # Model evaluation
+│   │
 │   ├── inference/
 │   │   ├── predict.py            # Prediction with MC dropout
 │   │   ├── gradcam.py            # Grad-CAM visualization
 │   │   └── gatekeeper.py         # OOD detection
+│   │
 │   └── utils/
 │       ├── model_loader.py       # Load saved models
 │       └── visualization.py      # Visualization utilities
+│
 ├── scripts/
 │   ├── train.py                  # Training script
 │   ├── evaluate.py               # Evaluation script
 │   └── inference.py              # Inference script
+│
 ├── saved_models/                 # Trained model weights
 └── dataset/
     ├── Training/
@@ -65,6 +73,7 @@ dataset/
 │   ├── meningioma/
 │   ├── notumor/
 │   └── pituitary/
+│
 └── Testing/
     ├── glioma/
     ├── meningioma/
