@@ -13,43 +13,43 @@ A deep learning system for classifying human brain MRI images into four categori
 ## Project Structure
 
 ```
-brain_tumor_classifier/
-├── config.py                     # Configuration and hyperparameters
-├── main.py                       # Main entry point
-├── requirements.txt              # Python dependencies
-├── README.md                     # This file
+🧠 brain_tumor_classifier/
+├── 📄 config.py                  # Configuration and hyperparameters
+├── 🚀 main.py                    # Main entry point
+├── 📦 requirements.txt           # Python dependencies
+├── 📖 README.md                  # This file
 │
-├── src/
-│   ├── models/
+├── 📂 src/
+│   ├── 🏗️ models/
 │   │   ├── ensemble.py           # EfficientNet ensemble
 │   │   └── autoencoder.py        # OOD detector
 │   │
-│   ├── data/
+│   ├── 📊 data/
 │   │   └── dataloader.py         # Data loading utilities
 │   │
-│   ├── training/
+│   ├── 🏋️ training/
 │   │   ├── train_ensemble.py     # Ensemble training
 │   │   └── train_autoencoder.py  # Autoencoder training
 │   │
-│   ├── evaluation/
+│   ├── 📈 evaluation/
 │   │   └── evaluate.py           # Model evaluation
 │   │
-│   ├── inference/
+│   ├── 🔍 inference/
 │   │   ├── predict.py            # Prediction with MC dropout
 │   │   ├── gradcam.py            # Grad-CAM visualization
 │   │   └── gatekeeper.py         # OOD detection
 │   │
-│   └── utils/
+│   └── 🛠️ utils/
 │       ├── model_loader.py       # Load saved models
 │       └── visualization.py      # Visualization utilities
 │
-├── scripts/
+├── 🐍 scripts/
 │   ├── train.py                  # Training script
 │   ├── evaluate.py               # Evaluation script
 │   └── inference.py              # Inference script
 │
-├── saved_models/                 # Trained model weights
-└── dataset/
+├── 💾 saved_models/              # Trained model weights
+└── 📁 dataset/
     ├── Training/
     └── Testing/
 ```
