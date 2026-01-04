@@ -65,7 +65,7 @@ def ensemble_predict_mc(img_path, ensemble, train_ds, gradcam_model_idx=0, mc_pa
     else:
         risk = "LOW confidence"
 
-    print(f"Predicted: {train_ds.classes[pred_class]} ({risk}: {pred_conf*100:.2f}%)")
+    print(f"Predicted: {config.CLASS_NAMES[pred_class]} ({risk}: {pred_conf*100:.2f}%)")
     print(f"Ensemble uncertainty (std across models): {pred_uncertainty:.4f}")
     
     # Grad-CAM visualization

@@ -35,9 +35,9 @@ def evaluate_ensemble(ensemble, test_loader, test_ds):
 
     print("Accuracy:", accuracy_score(y_true, y_pred))
 
-    plot_confusion(y_true, y_pred, test_ds.classes)
+    plot_confusion(y_true, y_pred, config.CLASS_NAMES)
 
     print(
         "\nClassification Report:\n",
-        classification_report(y_true, y_pred, target_names=test_ds.classes)
+        classification_report(y_true, y_pred, target_names=config.CLASS_NAMES)
     )
