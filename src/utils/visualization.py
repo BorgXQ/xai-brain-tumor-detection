@@ -15,6 +15,7 @@ def plot_confusion(y_true, y_pred, class_names):
     
     print("Confusion Matrix:")
     print(cm)
+    print()
 
     plt.figure(figsize=(6, 5))
     sns.heatmap(cm, annot=True, fmt="d", cmap="Blues",
