@@ -1,3 +1,4 @@
+import numpy as np
 import torch
 import torch.nn.functional as F
 from sklearn.metrics import classification_report, accuracy_score
@@ -13,6 +14,8 @@ def evaluate_ensemble(ensemble, test_loader):
         test_loader: Test data loader
     """
     y_true, y_pred = [], []
+    all_conf = []
+    correct_high_conf, total_high_conf = 0, 0
 
     for x, y in test_loader:
         x = x.to(config.DEVICE)
@@ -27,16 +30,36 @@ def evaluate_ensemble(ensemble, test_loader):
         
         probs_stack = torch.stack(probs_list)
         mean_probs = probs_stack.mean(dim=0)
-        preds = mean_probs.argmax(dim=1).cpu()
+        confs, preds = mean_probs.max(dim=1)
 
-        y_true.extend(y.numpy())
-        y_pred.extend(preds.numpy())
+        preds_np = preds.cpu().numpy()
+        y_np = y.numpy()
+        confs_np = confs.cpu().numpy()
+
+        y_true.extend(y_np)
+        y_pred.extend(preds_np)
+        all_conf.extend(confs_np)
+
+        high_conf_mask = confs_np >= 0.99
+        if high_conf_mask.any():
+            correct_high_conf += (preds_np[high_conf_mask] == y_np[high_conf_mask]).sum().item()
+            total_high_conf += high_conf_mask.sum().item()
 
     print("Accuracy:", accuracy_score(y_true, y_pred))
 
-    plot_confusion(y_true, y_pred, config.CLASS_NAMES)
+    print("\nAccuracy at various confidence thresholds:")
+    for threshold in [0.99, 0.90, 0.80, 0.70, 0.60, 0.50]:
+        high_conf_mask = np.array(all_conf) >= threshold
+        if high_conf_mask.any():
+            total = high_conf_mask.sum()
+            correct = (np.array(y_pred)[high_conf_mask] == np.array(y_true)[high_conf_mask]).sum()
+            accuracy = correct / total if total > 0 else 0
+            percentage = total / len(y_true) * 100
+            print(f"  - At ≥{threshold:.2f}: {percentage:.1f}% of predictions, {accuracy:.1%} correct")
 
     print(
         "\nClassification Report:\n",
         classification_report(y_true, y_pred, target_names=config.CLASS_NAMES)
     )
+
+    plot_confusion(y_true, y_pred, config.CLASS_NAMES)
