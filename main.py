@@ -40,7 +40,16 @@ def evaluate():
     print("Loading ensemble models...")
     ensemble = load_ensemble(config.NUM_MODELS, config.NUM_CLASSES, config.DEVICE)
     
-    print("\n=== Evaluating Ensemble ===")
+    print("""
+███████╗██╗   ██╗ █████╗ ██╗        ███████╗████████╗ █████╗ ██████╗ ████████╗
+██╔════╝██║   ██║██╔══██╗██║        ██╔════╝╚══██╔══╝██╔══██╗██╔══██╗╚══██╔══╝
+█████╗  ██║   ██║███████║██║        ███████╗   ██║   ███████║██████╔╝   ██║   
+██╔══╝  ╚██╗ ██╔╝██╔══██║██║        ╚════██║   ██║   ██╔══██║██╔══██╗   ██║   
+███████╗ ╚████╔╝ ██║  ██║███████╗   ███████║   ██║   ██║  ██║██║  ██║   ██║   
+╚══════╝  ╚═══╝  ╚═╝  ╚═╝╚══════╝   ╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   
+      ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░      
+""")
+    
     evaluate_ensemble(ensemble, test_loader)
 
 def inference(image_path, threshold=config.GATEKEEPER_THRESHOLD):
