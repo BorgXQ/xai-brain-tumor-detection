@@ -40,11 +40,6 @@ def evaluate_ensemble(ensemble, test_loader):
         y_pred.extend(preds_np)
         all_conf.extend(confs_np)
 
-        high_conf_mask = confs_np >= 0.99
-        if high_conf_mask.any():
-            correct_high_conf += (preds_np[high_conf_mask] == y_np[high_conf_mask]).sum().item()
-            total_high_conf += high_conf_mask.sum().item()
-
     print("Accuracy:", accuracy_score(y_true, y_pred))
 
     print("\nAccuracy at various confidence thresholds:")
@@ -55,7 +50,7 @@ def evaluate_ensemble(ensemble, test_loader):
             correct = (np.array(y_pred)[high_conf_mask] == np.array(y_true)[high_conf_mask]).sum()
             accuracy = correct / total if total > 0 else 0
             percentage = total / len(y_true) * 100
-            print(f"  - At ≥{threshold:.2f}: {percentage:.1f}% of predictions, {accuracy:.1%} correct")
+            print(f"  - At ≥{threshold:.2f}: {percentage:.1f}% of predictions, {accuracy:.1%} correct ({correct}/{total})")
 
     print(
         "\nClassification Report:\n",
