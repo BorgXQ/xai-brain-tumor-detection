@@ -6,7 +6,7 @@ DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 # Model hyperparameters
 NUM_CLASSES = 4
-NUM_MODELS = 30
+NUM_MODELS = 10
 IMG_SIZE = 256
 BATCH_SIZE = 16
 EPOCHS = 5
