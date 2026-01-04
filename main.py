@@ -35,18 +35,17 @@ def train():
 def evaluate():
     """Evaluate ensemble on test set."""
     print("Loading data...")
-    _, test_loader, _, test_ds = get_data_loaders()
+    _, test_loader, _, _ = get_data_loaders()
     
     print("Loading ensemble models...")
     ensemble = load_ensemble(config.NUM_MODELS, config.NUM_CLASSES, config.DEVICE)
     
     print("\n=== Evaluating Ensemble ===")
-    evaluate_ensemble(ensemble, test_loader, test_ds)
+    evaluate_ensemble(ensemble, test_loader)
 
 def inference(image_path, threshold=config.GATEKEEPER_THRESHOLD):
     """Run inference on a single image."""
     print("Loading models...")
-    _, _, train_ds, _ = get_data_loaders()
     ensemble = load_ensemble(config.NUM_MODELS, config.NUM_CLASSES, config.DEVICE)
     ae = load_gatekeeper(config.DEVICE)
     backbone = create_backbone()
@@ -62,7 +61,7 @@ def inference(image_path, threshold=config.GATEKEEPER_THRESHOLD):
         if valid:
             print(f"Image passed gatekeeper check (Reconstruction error: {recon_err:.4f}).")
             print("Proceeding to ensemble prediction.\n")
-            ensemble_predict_mc(image_path, ensemble, train_ds)
+            ensemble_predict_mc(image_path, ensemble)
         else:
             print(f"Image rejected by gatekeeper (Reconstruction error: {recon_err:.4f}).")
             print("Not a valid brain MRI.")
