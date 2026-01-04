@@ -73,12 +73,14 @@ def ensemble_predict_mc(img_path, ensemble, gradcam_model_idx=0, mc_passes=confi
             print(f"{class_name}: <0.01")
         else:
             print(f"{class_name}: {p: .2f}")
+    print("\n")
 
     sorted_votes = sorted(votes.items(), key=lambda x: x[1], reverse=True)
 
     print("Ensemble votes (argmax decisions):")
     for class_name, count in sorted_votes:
         print(f"{class_name}: {count}/{len(ensemble)}")
+    print("\n")
     
     if pred_conf >= 0.90:
         risk = "HIGH confidence"
