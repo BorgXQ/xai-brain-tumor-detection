@@ -15,7 +15,6 @@ def evaluate_ensemble(ensemble, test_loader):
     """
     y_true, y_pred = [], []
     all_conf = []
-    correct_high_conf, total_high_conf = 0, 0
 
     for x, y in test_loader:
         x = x.to(config.DEVICE)
