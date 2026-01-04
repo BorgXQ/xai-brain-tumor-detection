@@ -31,15 +31,22 @@ def ensemble_predict_mc(img_path, ensemble, gradcam_model_idx=0, mc_passes=confi
     x = config.tfm(img).unsqueeze(0).to(config.DEVICE)
 
     all_probs = []
+    votes = {class_name: 0 for class_name in config.CLASS_NAMES}
 
     for model_i in ensemble:
         model_i.eval()
         enable_mc_dropout(model_i)  # keep ONLY dropout active
         
         probs_list = []
+        model_votes = []
         for _ in range(mc_passes):
             logits = model_i(x)
             probs_list.append(F.softmax(logits, dim=1))
+            pred_class = logits.argmax(dim=1).item()
+            model_votes.append(pred_class)
+        
+        majority_vote = max(set(model_votes), key=model_votes.count)
+        votes[config.CLASS_NAMES[majority_vote]] += 1
 
         probs_stack = torch.stack(probs_list)
         mean_probs = probs_stack.mean(dim=0)
@@ -56,6 +63,24 @@ def ensemble_predict_mc(img_path, ensemble, gradcam_model_idx=0, mc_passes=confi
     pred_class = ensemble_mean.argmax(dim=1).item()
     pred_conf = ensemble_mean.max().item()
     pred_uncertainty = ensemble_std.max().item()  # epistemic uncertainty
+
+    class_p_pairs = list(zip(config.CLASS_NAMES, ensemble_mean[0].tolist()))
+    sorted_pairs = sorted(class_p_pairs, key=lambda x: x[1], reverse=True)
+
+    print("Model predictive distribution:")
+    for class_name, p in sorted_pairs:
+        if p < 0.01:
+            print(f"{class_name}: <0.01")
+        else:
+            print(f"{class_name}: {p: .2f}")
+    print("\n")
+
+    sorted_votes = sorted(votes.items(), key=lambda x: x[1], reverse=True)
+
+    print("Ensemble votes (argmax decisions):")
+    for class_name, count in sorted_votes:
+        print(f"{class_name}: {count}/{len(ensemble)}")
+    print("\n")
     
     if pred_conf >= 0.90:
         risk = "HIGH confidence"
