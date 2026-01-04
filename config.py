@@ -6,11 +6,14 @@ DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 # Model hyperparameters
 NUM_CLASSES = 4
-NUM_MODELS = 5
+NUM_MODELS = 30
 IMG_SIZE = 256
 BATCH_SIZE = 16
 EPOCHS = 5
 AE_EPOCHS = 10
+
+# Class names
+CLASS_NAMES = ["Glioma", "Meningioma", "No Tumor", "Pituitary"]
 
 # Autoencoder configuration
 INPUT_DIM = 1280
