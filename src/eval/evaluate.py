@@ -4,14 +4,13 @@ from sklearn.metrics import classification_report, accuracy_score
 import config
 from src.utils.visualization import plot_confusion
 
-def evaluate_ensemble(ensemble, test_loader, test_ds):
+def evaluate_ensemble(ensemble, test_loader):
     """
     Evaluates the ensemble on test data.
     
     Args:
         ensemble (list): List of trained models
         test_loader: Test data loader
-        test_ds: Test dataset (for class names)
     """
     y_true, y_pred = [], []
 

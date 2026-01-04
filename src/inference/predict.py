@@ -17,14 +17,13 @@ def enable_mc_dropout(model):
         if isinstance(m, torch.nn.Dropout):
             m.train()
 
-def ensemble_predict_mc(img_path, ensemble, train_ds, gradcam_model_idx=0, mc_passes=config.MC_PASSES):
+def ensemble_predict_mc(img_path, ensemble, gradcam_model_idx=0, mc_passes=config.MC_PASSES):
     """
     Performs ensemble prediction with MC dropout for uncertainty estimation.
     
     Args:
         img_path (str): Path to image
         ensemble (list): List of trained models
-        train_ds: Training dataset (for class names)
         gradcam_model_idx (int): Which model to use for Grad-CAM
         mc_passes (int): Number of MC dropout passes
     """
