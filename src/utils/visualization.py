@@ -4,7 +4,7 @@ from sklearn.metrics import confusion_matrix
 
 def plot_confusion(y_true, y_pred, class_names):
     """
-    Plots confusion matrix.
+    Prints and plots confusion matrix.
     
     Args:
         y_true: True labels
@@ -12,6 +12,10 @@ def plot_confusion(y_true, y_pred, class_names):
         class_names: List of class names
     """
     cm = confusion_matrix(y_true, y_pred)
+    
+    print("Confusion Matrix:")
+    print(cm)
+
     plt.figure(figsize=(6, 5))
     sns.heatmap(cm, annot=True, fmt="d", cmap="Blues",
                 xticklabels=class_names, yticklabels=class_names)
