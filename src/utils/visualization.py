@@ -70,10 +70,10 @@ def plot_confidence_distribution(ax, all_conf):
     )
     mean_conf = all_conf.mean()
     ax.axvline(mean_conf, color="red", linestyle="--", linewidth=2.5, label=f"Mean: {mean_conf:.3f}")
-    ax.set_xlabel("Confidence Score", fontsize=12, fontweight="semibold")
-    ax.set_ylabel("Density (log scale)", fontsize=12, fontweight="semibold")
+    ax.set_xlabel("Confidence Score", fontweight="semibold")
+    ax.set_ylabel("Density (log scale)", fontweight="semibold")
     ax.set_yscale("log")
-    ax.set_title("Distribution of Prediction Confidences", fontsize=14, fontweight="bold", pad=15)
+    ax.set_title("Distribution of Prediction Confidences", fontweight="bold")
     ax.legend(frameon=True, fancybox=True, shadow=True, loc="upper left")
     ax.grid(False)
     ax.set_facecolor("#f8f9fa")
@@ -119,7 +119,6 @@ def plot_reliability_diagram(ax, all_conf, correct):
                 x, y - 0.05,
                 f"N={count}",
                 ha="center",
-                fontsize=10,
                 bbox=dict(boxstyle="round,pad=0.3", facecolor="yellow", alpha=0.7)
             )
 
@@ -128,19 +127,21 @@ def plot_reliability_diagram(ax, all_conf, correct):
     for i in range(len(bin_centers)):
         if bin_counts[i] > 0:
             ece += (bin_counts[i] / total_samples) * abs(bin_accs[i] - bin_centers[i])
-    ax.text(
-        0.51, 0.9,
-        f"ECE: {ece:.4f}",
-        fontsize=12,
-        bbox=dict(boxstyle="round,pad=0.4", facecolor="lightblue", alpha=0.8)
-    )
 
     ax.plot([0.5, 1.0], [0.5, 1.0], linestyle="--", color="gray", label="Perfect Calibration", alpha=0.7)
 
-    ax.set_xlabel("Confidence Score", fontsize=12, fontweight="semibold")
-    ax.set_ylabel("True Accuracy", fontsize=12, fontweight="semibold")
-    ax.set_title("Reliability Diagram (Calibration Curve)", fontsize=14, fontweight="bold", pad=15)
-    ax.legend(frameon=True, fancybox=True, shadow=True, loc="upper left")
+    ax.set_xlabel("Confidence Score", fontweight="semibold")
+    ax.set_ylabel("True Accuracy", fontweight="semibold")
+    ax.set_title("Reliability Diagram (Calibration Curve)", fontweight="bold")
+    legend = ax.legend(frameon=True, fancybox=True, shadow=True, loc="upper left")
+    legend_bbox = legend.get_window_extent().transformed(ax.transAxes.inverted())
+    ax.text(
+        legend_bbox.x0 + 0.01, legend_bbox.y0 - 0.03,
+        f"ECE: {ece:.4f}",
+        transform=ax.transAxes,
+        bbox=dict(boxstyle="round,pad=0.4", facecolor="lightblue", alpha=0.8),
+        verticalalignment="top"
+    )
     ax.grid(False)
     ax.set_xlim([0.5, 1.0])
     ax.set_ylim([0.2, 1.05])
@@ -171,9 +172,9 @@ def plot_conf_vs_error_scatter(ax, all_conf, correct):
 
     ax.axhline(y=0.5, color="black", linestyle=":", alpha=0.5)
 
-    ax.set_xlabel("Confidence Score", fontsize=12, fontweight="semibold")
-    ax.set_ylabel("Correct (1) / Incorrect (0)", fontsize=12, fontweight="semibold")
-    ax.set_title("Confidence vs Prediction Correctness", fontsize=14, fontweight="bold", pad=15)
+    ax.set_xlabel("Confidence Score", fontweight="semibold")
+    ax.set_ylabel("Correct (1) / Incorrect (0)", fontweight="semibold")
+    ax.set_title("Confidence vs Prediction Correctness", fontweight="bold")
     ax.set_ylim([-0.5, 1.5])
     ax.set_yticks([0, 1])
     ax.set_yticklabels(["Incorrect", "Correct"])
@@ -221,15 +222,58 @@ def plot_conf_by_cls(ax, all_conf, y_true, y_pred):
                         f"{height:.2f}", ha="center", va="bottom", fontsize=9)
 
     # Style the plot
-    ax.set_xlabel("Class", fontsize=12, fontweight="semibold")
-    ax.set_ylabel("Score", fontsize=12, fontweight="semibold")
-    ax.set_title("Confidence and Accuracy by Class", fontsize=14, fontweight="bold", pad=15)
+    ax.set_xlabel("Class", fontweight="semibold")
+    ax.set_ylabel("Score", fontweight="semibold")
+    ax.set_title("Confidence and Accuracy by Class", fontweight="bold")
     ax.set_xticks(x)
     ax.set_xticklabels(config.CLASS_NAMES, rotation=45 if len(config.CLASS_NAMES) > 5 else 0)
     ax.legend(frameon=True, fancybox=True, shadow=True)
     ax.grid(False)
     ax.set_ylim([0, 1.1])
     ax.set_facecolor("#f8f9fa")
+
+def plot_individual_plots(all_conf, correct, y_true, y_pred):
+    """
+    Saves individual confidence analysis visualizations.
+
+    Args:
+        all_conf: Array of confidence scores
+        correct: Boolean array indicating correct predictions
+        y_true: True labels
+        y_pred: Predicted labels
+    """
+    plots_data = [
+        {
+            "function": plot_confidence_distribution,
+            "data": (all_conf,),
+            "filename": f"confidence_distribution.png",
+            "figsize": (6, 5)
+        },
+        {
+            "function": plot_reliability_diagram,
+            "data": (all_conf, correct),
+            "filename": f"reliability_diagram.png",
+            "figsize": (6, 5)
+        },
+        {
+            "function": plot_conf_vs_error_scatter,
+            "data": (all_conf, correct),
+            "filename": f"confidence_vs_error_scatter.png",
+            "figsize": (6, 5)
+        },
+        {
+            "function": plot_conf_by_cls,
+            "data": (all_conf, y_true, y_pred),
+            "filename": f"confidence_by_class.png",
+            "figsize": (6, 5)
+        }
+    ]
+
+    for plot_info in plots_data:
+        fig, ax = plt.subplots(figsize=plot_info["figsize"])
+        plot_info["function"](ax, *plot_info["data"])
+        save_plot(fig, plot_info["filename"])
+        plt.close(fig)
 
 def plot_dashboard(all_conf, correct, y_true, y_pred):
     """
