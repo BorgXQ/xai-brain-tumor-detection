@@ -7,7 +7,6 @@ sys.path.append('..')
 import argparse
 from PIL import Image
 import config
-from src.data.dataloader import get_data_loaders
 from src.utils.model_loader import load_ensemble, load_gatekeeper
 from src.models.ensemble import create_backbone
 from src.inference.gatekeeper import gatekeeper
@@ -21,7 +20,6 @@ def main():
     args = parser.parse_args()
     
     print("Loading models...")
-    _, _, train_ds, _ = get_data_loaders()
     ensemble = load_ensemble(config.NUM_MODELS, config.NUM_CLASSES, config.DEVICE)
     ae = load_gatekeeper(config.DEVICE)
     backbone = create_backbone()
@@ -38,7 +36,7 @@ def main():
         if valid:
             print(f"Image passed gatekeeper check (Reconstruction error: {recon_err:.4f}).")
             print("Proceeding to ensemble prediction.\n")
-            ensemble_predict_mc(args.image, ensemble, train_ds, gradcam_model_idx=0)
+            ensemble_predict_mc(args.image, ensemble)
         else:
             print(f"Image rejected by gatekeeper (Reconstruction error: {recon_err:.4f}).")
             print("Not a valid brain MRI.")

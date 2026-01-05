@@ -13,7 +13,7 @@ from src.training.train_autoencoder import train_autoencoder
 
 def main():
     print("Loading data...")
-    train_loader, test_loader, train_ds, test_ds = get_data_loaders()
+    train_loader, _, _, _ = get_data_loaders()
     
     # Train ensemble
     print("\n=== Training Ensemble ===")
