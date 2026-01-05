@@ -5,18 +5,30 @@ import numpy as np
 from sklearn.metrics import confusion_matrix
 import config
 
-def save_plot(fig, filename, save_dir=config.SAVED_PLOTS_PATH):
+def save_plot(fig, filename, save_dir=config.SAVED_PLOTS_PATH, show_plot=None):
     """
-    Saves the given figure to the specified filename.
+    Saves (and shows) the given figure to the specified filename.
     
     Args:
         fig: Matplotlib figure
-        filename (str): Path to save the figure
+        filename: Path to save the figure
+        save_dir: Directory to save the figure
+        show_plot: Whether to display the plot (None = auto-detect)
     """
     os.makedirs(save_dir, exist_ok=True)
     filepath = f"{save_dir}/{filename}"
     fig.savefig(filepath, bbox_inches="tight", dpi=300)
     print(f"Plot saved to {filepath}")
+
+    if show_plot is None:
+        try:
+            from IPython import get_ipython
+            show_plot = get_ipython() is not None
+        except:
+            show_plot = False
+
+    if show_plot:
+        plt.show()
 
 def plot_confusion(y_true, y_pred, class_names):
     """
@@ -28,10 +40,6 @@ def plot_confusion(y_true, y_pred, class_names):
         class_names: List of class names
     """
     cm = confusion_matrix(y_true, y_pred)
-    
-    print("Confusion Matrix:")
-    print(cm)
-    print()
 
     fig, ax = plt.subplots(figsize=(6, 5))
     sns.heatmap(cm, annot=True, fmt="d", cmap="Blues",
