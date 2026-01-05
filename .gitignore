@@ -2,3 +2,4 @@ __pycache__
 .venv
 dataset
 saved_models
+saved_plots
