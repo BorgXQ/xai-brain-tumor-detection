@@ -137,8 +137,8 @@ def plot_reliability_diagram(ax, all_conf, correct):
 
     ax.plot([0.5, 1.0], [0.5, 1.0], linestyle="--", color="gray", label="Perfect Calibration", alpha=0.7)
 
-    ax.set_xlabel("Predicted Confidence", fontsize=12, fontweight="semibold")
-    ax.set_ylabel("Actual Accuracy", fontsize=12, fontweight="semibold")
+    ax.set_xlabel("Confidence Score", fontsize=12, fontweight="semibold")
+    ax.set_ylabel("True Accuracy", fontsize=12, fontweight="semibold")
     ax.set_title("Reliability Diagram (Calibration Curve)", fontsize=14, fontweight="bold", pad=15)
     ax.legend(frameon=True, fancybox=True, shadow=True, loc="upper left")
     ax.grid(False)
