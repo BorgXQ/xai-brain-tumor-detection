@@ -55,42 +55,30 @@ def ensemble_predict_mc(img_path, ensemble, gradcam_model_idx=0, mc_passes=confi
 
     # Stack ensemble results
     mean_probs_stack = torch.stack([p[0] for p in all_probs])
-    std_probs_stack = torch.stack([p[1] for p in all_probs])
 
     ensemble_mean = mean_probs_stack.mean(dim=0)
-    ensemble_std = std_probs_stack.mean(dim=0)
 
     pred_class = ensemble_mean.argmax(dim=1).item()
     pred_conf = ensemble_mean.max().item()
-    pred_uncertainty = ensemble_std.max().item()  # epistemic uncertainty
 
     class_p_pairs = list(zip(config.CLASS_NAMES, ensemble_mean[0].tolist()))
     sorted_pairs = sorted(class_p_pairs, key=lambda x: x[1], reverse=True)
 
-    print("Model predictive distribution:")
+    print(f"PREDICTION: {config.CLASS_NAMES[pred_class]} (Model score: {pred_conf*100:.2f}%)")
+
+    print("\n=== Model predictive distribution ===")
     for class_name, p in sorted_pairs:
         if p < 0.01:
             print(f"{class_name}: <0.01")
         else:
             print(f"{class_name}: {p: .2f}")
-    print()
 
     sorted_votes = sorted(votes.items(), key=lambda x: x[1], reverse=True)
 
-    print("Ensemble votes (argmax decisions):")
+    print("\n=== Ensemble votes (argmax decisions) ===")
     for class_name, count in sorted_votes:
         print(f"{class_name}: {count}/{len(ensemble)}")
     print()
-    
-    if pred_conf >= 0.90:
-        risk = "HIGH confidence"
-    elif pred_conf >= 0.80:
-        risk = "MEDIUM confidence"
-    else:
-        risk = "LOW confidence"
-
-    print(f"Predicted: {config.CLASS_NAMES[pred_class]} ({risk}: {pred_conf*100:.2f}%)")
-    print(f"Ensemble uncertainty (std across models): {pred_uncertainty:.4f}")
     
     # Grad-CAM visualization
     gradcam_model = ensemble[gradcam_model_idx]
