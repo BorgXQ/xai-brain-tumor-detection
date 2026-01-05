@@ -21,7 +21,7 @@ The ensemble achieves **99.62% accuracy** on the test set. Empirically, 96.2% of
 ## Project Structure
 
 ```
-🧠 brain_tumor_classifier/
+🧠 xai-brain-tumor-detection/
 ├── 📄 config.py                  # Configuration and hyperparameters
 ├── 🚀 main.py                    # Main entry point
 ├── 📦 requirements.txt           # Python dependencies
@@ -105,12 +105,24 @@ Train both the ensemble and autoencoder:
 python main.py train
 ```
 
+Or use the dedicated script:
+
+```bash
+python scripts/train.py
+```
+
 ### Evaluation
 
 Evaluate the trained ensemble on the test set:
 
 ```bash
 python main.py evaluate
+```
+
+Or:
+
+```bash
+python scripts/eval.py
 ```
 
 ### Inference
@@ -125,6 +137,12 @@ With custom OOD threshold:
 
 ```bash
 python main.py inference --image path/to/image.jpg --threshold 0.15
+```
+
+Or use the dedicated script:
+
+```bash
+python scripts/inference.py --image path/to/image.jpg
 ```
 
 ## Configuration
