@@ -3,7 +3,8 @@ import torch
 import torch.nn.functional as F
 from sklearn.metrics import classification_report, accuracy_score
 import config
-from src.utils.visualization import plot_confusion
+import matplotlib.pyplot as plt
+from src.utils.visualization import plot_confusion, plot_dashboard
 
 def evaluate_ensemble(ensemble, test_loader):
     """
@@ -57,3 +58,10 @@ def evaluate_ensemble(ensemble, test_loader):
     )
 
     plot_confusion(y_true, y_pred, config.CLASS_NAMES)
+
+    all_conf = np.array(all_conf)
+    y_true = np.array(y_true)
+    y_pred = np.array(y_pred)
+    correct = (y_pred == y_true)
+
+    plot_dashboard(all_conf, correct, y_true, y_pred)
