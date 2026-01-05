@@ -2,15 +2,21 @@
 
 A deep learning system for classifying human brain MRI images into four categories: glioma, meningioma, pituitary tumor, or no tumor. Uses a deep ensemble of EfficientNet-B0 models with Monte Carlo dropout for uncertainty estimation and an autoencoder-based out-of-distribution (OOD) detector.
 
-Check out the [demo](https://huggingface.co/spaces/Borgupine/xai-brain-tumor).
+Check out the **[demo](https://huggingface.co/spaces/Borgupine/xai-brain-tumor)**.
 
 ## Features
 
-- **Deep Ensemble**: 5 EfficientNet-B0 models for robust predictions
+- **Deep Ensemble**: 10 EfficientNet-B0 models for robust predictions
 - **OOD Detection**: Autoencoder gatekeeper to reject invalid inputs
 - **Uncertainty Estimation**: MC Dropout for epistemic uncertainty
 - **Explainability**: Grad-CAM visualizations
 - **4-Class Classification**: glioma, meningioma, pituitary, or no tumor
+
+## Model Performance
+
+The ensemble achieves **99.62% accuracy** on the test set. Empirically, 96.2% of predictions have >95% confidence with 100% accuracy.
+
+**[View detailed evaluation results](notebooks/model_evaluation.ipynb)**
 
 ## Project Structure
 
@@ -33,7 +39,7 @@ Check out the [demo](https://huggingface.co/spaces/Borgupine/xai-brain-tumor).
 │   │   ├── train_ensemble.py     # Ensemble training
 │   │   └── train_autoencoder.py  # Autoencoder training
 │   │
-│   ├── 📈 evaluation/
+│   ├── 📋 evaluation/
 │   │   └── evaluate.py           # Model evaluation
 │   │
 │   ├── 🔍 inference/
@@ -50,7 +56,11 @@ Check out the [demo](https://huggingface.co/spaces/Borgupine/xai-brain-tumor).
 │   ├── evaluate.py               # Evaluation script
 │   └── inference.py              # Inference script
 │
+├── 📒 notebooks/
+│   └── model_eval.ipynb          # Performance metrics and plots 
+│
 ├── 💾 saved_models/              # Trained model weights
+├── 📈 saved_eval_plots/          # Evaluation plots
 └── 📁 dataset/
     ├── Training/
     └── Testing/
