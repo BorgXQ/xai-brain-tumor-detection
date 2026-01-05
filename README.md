@@ -16,7 +16,7 @@ Check out the **[demo](https://huggingface.co/spaces/Borgupine/xai-brain-tumor)*
 
 The ensemble achieves **99.62% accuracy** on the test set. Empirically, 96.2% of predictions have >95% confidence with 100% accuracy.
 
-**[View detailed evaluation results](notebooks/model_evaluation.ipynb)**
+**[View detailed evaluation results](notebooks/model_eval.ipynb)**
 
 ## Project Structure
 
