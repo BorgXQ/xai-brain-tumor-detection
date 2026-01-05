@@ -1,8 +1,22 @@
+import os
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 from sklearn.metrics import confusion_matrix
 import config
+
+def save_plot(fig, filename, save_dir=config.SAVED_PLOTS_PATH):
+    """
+    Saves the given figure to the specified filename.
+    
+    Args:
+        fig: Matplotlib figure
+        filename (str): Path to save the figure
+    """
+    os.makedirs(save_dir, exist_ok=True)
+    filepath = f"{save_dir}/{filename}"
+    fig.savefig(filepath, bbox_inches="tight", dpi=300)
+    print(f"Plot saved to {filepath}")
 
 def plot_confusion(y_true, y_pred, class_names):
     """
@@ -19,13 +33,15 @@ def plot_confusion(y_true, y_pred, class_names):
     print(cm)
     print()
 
-    plt.figure(figsize=(6, 5))
+    fig, ax = plt.subplots(figsize=(6, 5))
     sns.heatmap(cm, annot=True, fmt="d", cmap="Blues",
                 xticklabels=class_names, yticklabels=class_names)
-    plt.ylabel("True Label")
-    plt.xlabel("Predicted Label")
-    plt.title("Confusion Matrix")
-    plt.show()
+    ax.set_ylabel("True Label")
+    ax.set_xlabel("Predicted Label")
+    ax.set_title("Confusion Matrix")
+
+    save_plot(fig, "confusion_matrix.png")
+    plt.close(fig)
 
 def plot_confidence_distribution(ax, all_conf):
     """
@@ -240,4 +256,5 @@ def plot_dashboard(all_conf, correct, y_true, y_pred):
     plot_conf_by_cls(ax4, all_conf, y_true, y_pred)
 
     plt.tight_layout()
-    plt.show()
+    save_plot(fig, "confidence_analysis_dashboard.png")
+    plt.close(fig)

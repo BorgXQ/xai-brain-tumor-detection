@@ -24,6 +24,7 @@ DATASET_PATH = "./dataset"
 TRAIN_PATH = "./dataset/Training"
 TEST_PATH = "./dataset/Testing"
 SAVED_MODELS_PATH = "./saved_models"
+SAVED_PLOTS_PATH = "./saved_plots"
 
 # Image transformations
 tfm = transforms.Compose([
