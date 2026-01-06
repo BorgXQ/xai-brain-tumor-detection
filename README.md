@@ -149,7 +149,7 @@ python scripts/inference.py --image path/to/image.jpg
 
 Edit `config.py` to modify:
 
-- `NUM_MODELS`: Number of ensemble models (default: 5)
+- `NUM_MODELS`: Number of ensemble models (default: 10)
 - `EPOCHS`: Training epochs for ensemble (default: 5)
 - `AE_EPOCHS`: Training epochs for autoencoder (default: 10)
 - `BATCH_SIZE`: Batch size (default: 16)
