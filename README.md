@@ -160,7 +160,7 @@ Edit `config.py` to modify:
 ## Model Architecture
 
 ### Ensemble
-- 5 independent EfficientNet-B0 models
+- 10 independent EfficientNet-B0 models
 - Pre-trained on ImageNet
 - Custom classifier with dropout (0.5)
 - 4 output classes
@@ -173,15 +173,11 @@ Edit `config.py` to modify:
 ## Output
 
 The system provides:
-1. Predicted class with confidence level
-2. Uncertainty estimate (epistemic)
+1. Predicted class with model scores
+2. Ranking of ensemble votes
 3. Grad-CAM visualization showing regions of focus
 4. OOD detection to reject invalid inputs
 
 ## License
 
 MIT
-
-## Citation
-
-If you use this code, please cite appropriately.
